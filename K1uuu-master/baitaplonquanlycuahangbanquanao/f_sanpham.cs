@@ -1,14 +1,18 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.Data;
-
+using System.Data.SqlClient;
+using CrystalDecisions.CrystalReports.Engine;
+using CrystalDecisions.Shared;
+using System.Configuration;
 namespace baitaplonquanlycuahangbanquanao
 {
     public partial class f_sanpham : Form
     {
-        public string constr = "Data Source=LAPTOP-5D4306EF\\SQLEXPRES;Initial Catalog=BTL_HSK;Integrated Security=True";
+        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
         hamdungchung ham = new hamdungchung();
 
         public f_sanpham()
@@ -31,7 +35,7 @@ namespace baitaplonquanlycuahangbanquanao
         private void btnthem_Click(object sender, EventArgs e)
         {
             string sql = $"INSERT INTO btlLoaiHang VALUES ('{txbmaloaihang.Text}', N'{txbtenloaihang.Text}')";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
+            if (hamdungchung.thuchiendoanmasql(constr, sql))
                 MessageBox.Show("Thêm loại hàng thành công!");
             else
                 MessageBox.Show("Thêm thất bại!");
@@ -40,42 +44,123 @@ namespace baitaplonquanlycuahangbanquanao
 
         private void btnthemmh_Click(object sender, EventArgs e)
         {
-            string sql = $"INSERT INTO btlMatHang (sMaMH, sMaLoaiHang, sTenMH, sMaNCC, iSoluong, fGiaHang, sChatLieu) " +
-                         $"VALUES ('{txbmamathang.Text}', '{cbtenloaihang.SelectedValue}', N'{txbtenmathang.Text}', '{cbnhacungcap.SelectedValue}', {txbsoluong.Text}, {txbgianhap.Text}, N'{txbchatlieu.Text}')";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
-                MessageBox.Show("Thêm mặt hàng thành công!");
-            else
-                MessageBox.Show("Thêm thất bại!");
-            LoadData();
+
+            string maMH = txbmamathang.Text.Trim();
+            string tenMH = txbtenmathang.Text.Trim();
+            string maLoaiHang = cbtenloaihang.SelectedValue.ToString();
+            string maNCC = cbnhacungcap.SelectedValue.ToString();
+            string chatLieu = txbchatlieu.Text.Trim();
+            float giaHang = float.Parse(txbgianhap.Text);
+            int soLuong = int.Parse(txbsoluong.Text);
+            string size = txbsize.Text.Trim();
+            string mauSac = txbmausac.Text.Trim();
+
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                conn.Open();
+
+                // Kiểm tra xem mặt hàng đã tồn tại chưa
+                string checkQuery = "SELECT COUNT(*) FROM btlMatHang WHERE sMaMH = @sMaMH";
+                SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+                checkCmd.Parameters.AddWithValue("@sMaMH", maMH);
+                int count = (int)checkCmd.ExecuteScalar();
+
+                if (count == 0)
+                {
+                    // Nếu chưa có, thêm mới vào btlMatHang
+                    string insertMHQuery = "INSERT INTO btlMatHang (sMaMH, sMaLoaiHang, sTenMH, sMaNCC, iSoluong, fGiaHang, sChatLieu) " +
+                                           "VALUES (@sMaMH, @sMaLoaiHang, @sTenMH, @sMaNCC, 0, @fGiaHang, @sChatLieu)";
+                    SqlCommand insertMHCmd = new SqlCommand(insertMHQuery, conn);
+                    insertMHCmd.Parameters.AddWithValue("@sMaMH", maMH);
+                    insertMHCmd.Parameters.AddWithValue("@sMaLoaiHang", maLoaiHang);
+                    insertMHCmd.Parameters.AddWithValue("@sTenMH", tenMH);
+                    insertMHCmd.Parameters.AddWithValue("@sMaNCC", maNCC);
+                    insertMHCmd.Parameters.AddWithValue("@fGiaHang", giaHang);
+                    insertMHCmd.Parameters.AddWithValue("@sChatLieu", chatLieu);
+                    insertMHCmd.ExecuteNonQuery();
+                }
+
+                // Gọi Stored Procedure để thêm/cập nhật vào btlChiTietMatHang
+                SqlCommand cmd = new SqlCommand("sp_InsertOrUpdateChiTietMatHang", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@sMaMH", maMH);
+                cmd.Parameters.AddWithValue("@sMauSac", mauSac);
+                cmd.Parameters.AddWithValue("@sSize", size);
+                cmd.Parameters.AddWithValue("@iSoLuong", soLuong);
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Thêm sản phẩm thành công!");
+                LoadData(); // Load lại dữ liệu sau khi thêm
+            }
         }
 
         private void btnthemmh_chitiet_Click(object sender, EventArgs e)
         {
             string sql = $"INSERT INTO btlChiTietMatHang (sMaMH, sMauSac, sSize, iSoLuong) " +
                          $"VALUES ('{txbmamathang.Text}', N'{txbmausac.Text}', N'{txbsize.Text}', {txbsoluong.Text})";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
+            if (hamdungchung.thuchiendoanmasql(constr, sql))
                 MessageBox.Show("Thêm chi tiết mặt hàng thành công!");
             else
                 MessageBox.Show("Thêm thất bại!");
             LoadData();
         }
 
+
+
+        private string oldSize = "";
+        private string oldMauSac = "";
         private void btnsuamh_Click(object sender, EventArgs e)
         {
-            string sql = $"UPDATE btlMatHang SET sMaLoaiHang='{cbtenloaihang.SelectedValue}', sTenMH=N'{txbtenmathang.Text}', sMaNCC='{cbnhacungcap.SelectedValue}', " +
-                         $"iSoluong={txbsoluong.Text}, fGiaHang={txbgianhap.Text}, sChatLieu=N'{txbchatlieu.Text}' WHERE sMaMH='{txbmamathang.Text}'";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
-                MessageBox.Show("Sửa mặt hàng thành công!");
-            else
-                MessageBox.Show("Sửa thất bại!");
-            LoadData();
+            if (string.IsNullOrEmpty(txbmamathang.Text) || string.IsNullOrEmpty(txbtenmathang.Text) ||
+        cbnhacungcap.SelectedValue == null || string.IsNullOrEmpty(cbnhacungcap.SelectedValue.ToString()) ||
+        cbtenloaihang.SelectedValue == null || string.IsNullOrEmpty(cbtenloaihang.SelectedValue.ToString()) ||
+        string.IsNullOrEmpty(txbmausac.Text) || string.IsNullOrEmpty(txbsize.Text) ||
+        string.IsNullOrEmpty(txbsoluong.Text) || string.IsNullOrEmpty(txbgianhap.Text) ||
+        string.IsNullOrEmpty(txbchatlieu.Text) || string.IsNullOrEmpty(oldSize) ||
+        string.IsNullOrEmpty(oldMauSac))
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("sp_UpdateMatHang", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Truyền các tham số cho Stored Procedure
+                    cmd.Parameters.AddWithValue("@MaMH", txbmamathang.Text);
+                    cmd.Parameters.AddWithValue("@MaLoaiHang", cbtenloaihang.SelectedValue.ToString());
+                    cmd.Parameters.AddWithValue("@TenMH", txbtenmathang.Text);
+                    cmd.Parameters.AddWithValue("@MaNCC", cbnhacungcap.SelectedValue.ToString());
+                    cmd.Parameters.AddWithValue("@GiaHang", Convert.ToDouble(txbgianhap.Text));
+                    cmd.Parameters.AddWithValue("@ChatLieu", txbchatlieu.Text);
+                    cmd.Parameters.AddWithValue("@OldSize", oldSize);
+                    cmd.Parameters.AddWithValue("@OldMauSac", oldMauSac);
+                    cmd.Parameters.AddWithValue("@NewSize", txbsize.Text);
+                    cmd.Parameters.AddWithValue("@NewMauSac", txbmausac.Text);
+                    cmd.Parameters.AddWithValue("@SoLuong", Convert.ToInt32(txbsoluong.Text));
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Cập nhật mặt hàng thành công!");
+
+                    LoadData(); // Cập nhật lại danh sách sản phẩm
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
         }
 
         private void btnsuamh_chitiet_Click(object sender, EventArgs e)
         {
             string sql = $"UPDATE btlChiTietMatHang SET sMauSac=N'{txbmausac.Text}', sSize=N'{txbsize.Text}', iSoLuong={txbsoluong.Text} " +
                          $"WHERE sMaMH='{txbmamathang.Text}' AND sMauSac=N'{txbmausac.Text}' AND sSize=N'{txbsize.Text}'";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
+            if (hamdungchung.thuchiendoanmasql(constr, sql))
                 MessageBox.Show("Sửa chi tiết mặt hàng thành công!");
             else
                 MessageBox.Show("Sửa thất bại!");
@@ -84,18 +169,43 @@ namespace baitaplonquanlycuahangbanquanao
 
         private void btnxoamh_Click(object sender, EventArgs e)
         {
-            string sql = $"DELETE FROM btlMatHang WHERE sMaMH='{txbmamathang.Text}'";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
-                MessageBox.Show("Xóa mặt hàng thành công!");
-            else
-                MessageBox.Show("Xóa thất bại!");
-            LoadData();
+            if (string.IsNullOrEmpty(txbmamathang.Text) || string.IsNullOrEmpty(txbmausac.Text) || string.IsNullOrEmpty(txbsize.Text))
+            {
+                MessageBox.Show("Vui lòng chọn mặt hàng, màu sắc và size cần xóa!");
+                return;
+            }
+
+            string maMH = txbmamathang.Text;
+            string mauSac = txbmausac.Text;
+            string size = txbsize.Text;
+
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("sp_DeleteChiTietMatHang", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MaMH", maMH);
+                    cmd.Parameters.AddWithValue("@MauSac", mauSac);
+                    cmd.Parameters.AddWithValue("@Size", size);
+
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Xóa thành công!");
+
+                    LoadData(); // Cập nhật lại danh sách sản phẩm
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
         }
 
         private void btnxoamh_chitiet_Click(object sender, EventArgs e)
         {
             string sql = $"DELETE FROM btlChiTietMatHang WHERE sMaMH='{txbmamathang.Text}' AND sMauSac=N'{txbmausac.Text}' AND sSize=N'{txbsize.Text}'";
-            if (hamdungchung.thuchiendoanmasql(ham.constr, sql))
+            if (hamdungchung.thuchiendoanmasql(constr, sql))
                 MessageBox.Show("Xóa chi tiết mặt hàng thành công!");
             else
                 MessageBox.Show("Xóa thất bại!");
@@ -108,7 +218,7 @@ namespace baitaplonquanlycuahangbanquanao
             int soLuong = 0;
             string query = "SELECT iSoluong FROM btlChiTietMatHang WHERE sMaMH = @maMH AND sSize = @size AND sMauSac = @mauSac";
 
-            using (SqlConnection conn = new SqlConnection( constr))
+            using (SqlConnection conn = new SqlConnection(constr))
             using (SqlCommand cmd = new SqlCommand(query, conn))
             {
                 cmd.Parameters.AddWithValue("@maMH", maMH);
@@ -159,6 +269,10 @@ namespace baitaplonquanlycuahangbanquanao
                 txbsize.Text = sizeCell.Value?.ToString();
                 txbmausac.Text = mauSacCell.Value?.ToString();
                 cbtenloaihang.Text = row.Cells["Loại hàng"].Value.ToString();
+
+
+                oldSize = txbsize.Text;
+                oldMauSac = txbmausac.Text;
             }
         }
 
@@ -372,5 +486,18 @@ namespace baitaplonquanlycuahangbanquanao
         {
             ham.loadgridview("v_MatHang_ChiTiet", dgvmathang);
         }
+
+
+
+        private void dgvmathang_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void f_sanpham_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
+

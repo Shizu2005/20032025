@@ -43,7 +43,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.textBox_sTenNV = new System.Windows.Forms.TextBox();
             this.textBox_sCCCD = new System.Windows.Forms.TextBox();
             this.textBox_sDiaChi = new System.Windows.Forms.TextBox();
-            this.textBox_iSDT = new System.Windows.Forms.TextBox();
+            this.textBox_sSDT = new System.Windows.Forms.TextBox();
             this.textBox_sTenDangNhap = new System.Windows.Forms.TextBox();
             this.textBox_sMatKhau = new System.Windows.Forms.TextBox();
             this.dateTimePicker_dNgaySinh = new System.Windows.Forms.DateTimePicker();
@@ -118,7 +118,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(114, 20);
             this.label6.TabIndex = 5;
-            this.label6.Text = "Số ĐIện Thoại";
+            this.label6.Text = "Số Điện Thoại";
             // 
             // label7
             // 
@@ -192,13 +192,13 @@ namespace baitaplonquanlycuahangbanquanao
             this.textBox_sDiaChi.Size = new System.Drawing.Size(137, 27);
             this.textBox_sDiaChi.TabIndex = 13;
             // 
-            // textBox_iSDT
+            // textBox_sSDT
             // 
-            this.textBox_iSDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_iSDT.Location = new System.Drawing.Point(21, 216);
-            this.textBox_iSDT.Name = "textBox_iSDT";
-            this.textBox_iSDT.Size = new System.Drawing.Size(154, 27);
-            this.textBox_iSDT.TabIndex = 14;
+            this.textBox_sSDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_sSDT.Location = new System.Drawing.Point(21, 216);
+            this.textBox_sSDT.Name = "textBox_sSDT";
+            this.textBox_sSDT.Size = new System.Drawing.Size(154, 27);
+            this.textBox_sSDT.TabIndex = 14;
             // 
             // textBox_sTenDangNhap
             // 
@@ -330,7 +330,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.Controls.Add(this.dateTimePicker_dNgaySinh);
             this.Controls.Add(this.textBox_sMatKhau);
             this.Controls.Add(this.textBox_sTenDangNhap);
-            this.Controls.Add(this.textBox_iSDT);
+            this.Controls.Add(this.textBox_sSDT);
             this.Controls.Add(this.textBox_sDiaChi);
             this.Controls.Add(this.textBox_sCCCD);
             this.Controls.Add(this.textBox_sTenNV);
@@ -371,7 +371,7 @@ namespace baitaplonquanlycuahangbanquanao
         private System.Windows.Forms.TextBox textBox_sTenNV;
         private System.Windows.Forms.TextBox textBox_sCCCD;
         private System.Windows.Forms.TextBox textBox_sDiaChi;
-        private System.Windows.Forms.TextBox textBox_iSDT;
+        private System.Windows.Forms.TextBox textBox_sSDT;
         private System.Windows.Forms.TextBox textBox_sTenDangNhap;
         private System.Windows.Forms.TextBox textBox_sMatKhau;
         private System.Windows.Forms.DateTimePicker dateTimePicker_dNgaySinh;

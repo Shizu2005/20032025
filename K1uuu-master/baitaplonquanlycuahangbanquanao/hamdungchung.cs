@@ -166,6 +166,45 @@ namespace baitaplonquanlycuahangbanquanao
             }
             return dt;
         }
+        public void CapNhatSoLuongMatHang(string maMH, int soLuongThayDoi, string mausac, string size)
+        {
+            //if (cnn.State == ConnectionState.Closed)
+            //{
+            //    ketnoi(); // Đảm bảo kết nối đã mở
+            //}
 
+
+            //string query = "UPDATE btlMatHang SET iSoluong = iSoluong + " + soLuongThayDoi + " WHERE sMaMH = '" + maMH + "' ";
+
+            //thuchiendoanmasql(constr, query);
+            //using (SqlCommand cmd = new SqlCommand(query, cnn))
+            //{
+            //    cmd.Parameters.AddWithValue("@soLuongThayDoi", soLuongThayDoi);
+            //    cmd.Parameters.AddWithValue("@maMH", maMH);
+            //    cmd.ExecuteNonQuery();
+            //}
+            using (SqlConnection conn = new SqlConnection(constr))
+            {
+                conn.Open();
+                string query = "UPDATE btlChiTietMatHang " +
+                               "SET iSoLuong = iSoLuong + @soLuongThayDoi " +
+                               "WHERE sMaMH = @maMH AND sMauSac = @mauSac AND sSize = @size";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@soLuongThayDoi", soLuongThayDoi);
+                    cmd.Parameters.AddWithValue("@maMH", maMH);
+                    cmd.Parameters.AddWithValue("@mauSac", mausac);
+                    cmd.Parameters.AddWithValue("@size", size);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        MessageBox.Show("Không tìm thấy sản phẩm để cập nhật số lượng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+
+        }
     }
 }

@@ -68,11 +68,41 @@
       <DependentUpon>CRKhoHang.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CR_dsNV.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CR_dsNV.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CR_dsKh.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CR_dsKh.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="f_doanhthu_chi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="f_doanhthu_chi.Designer.cs">
+      <DependentUpon>f_doanhthu_chi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="f_doanhthu_thu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="f_doanhthu_thu.Designer.cs">
+      <DependentUpon>f_doanhthu_thu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="f_indanhsachkh.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="f_indanhsachkh.Designer.cs">
+      <DependentUpon>f_indanhsachkh.cs</DependentUpon>
     </Compile>
     <Compile Include="f_CRKhoHang.cs">
       <SubType>Form</SubType>
@@ -160,8 +190,25 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>CRKhoHang.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="CR_dsNV.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CR_dsNV.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CR_dsKh.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CR_dsKh.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="f_doanhthu_chi.resx">
+      <DependentUpon>f_doanhthu_chi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="f_doanhthu_thu.resx">
+      <DependentUpon>f_doanhthu_thu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="f_indanhsachkh.resx">
+      <DependentUpon>f_indanhsachkh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="f_CRKhoHang.resx">
       <DependentUpon>f_CRKhoHang.cs</DependentUpon>
@@ -223,7 +270,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />

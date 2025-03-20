@@ -18,7 +18,7 @@ namespace baitaplonquanlycuahangbanquanao
         {
             InitializeComponent();
         }
-        public string constr = "Data Source=LAPTOP-5D4306EF\\SQLEXPRES;Initial Catalog=BTL_HSK;Integrated Security=True";
+        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
         private void f_khachhang_Load(object sender, EventArgs e)
         {
             hamdungchung dungchung = new hamdungchung();
@@ -31,7 +31,7 @@ namespace baitaplonquanlycuahangbanquanao
         private void button_Them_Click(object sender, EventArgs e)
         {
             DateTime ngaysinh = dateTimePicker_dNgaySinh.Value;
-            string gioiTinh = radioButton_Nam.Checked ? "Nam" : "Nữ"; 
+            string gioiTinh = radioButton_Nam.Checked ? "Nam" : "Nữ";
 
             // Kiểm tra mã khách hàng đã tồn tại chưa
             string checkSql = $"SELECT COUNT(*) FROM btlKhachHang WHERE sMaKH = '{textBox_sMaKH.Text}'";
@@ -51,7 +51,7 @@ namespace baitaplonquanlycuahangbanquanao
                 // Tạo câu lệnh SQL để thêm khách hàng
                 string sqlInsert = $@"
         INSERT INTO btlKhachHang (sMaKH, sTenKH, sDiaChi, sSDT, dNgaySinh, sGioiTinh) 
-        VALUES ('{textBox_sMaKH.Text}', N'{textBox_sTenKH.Text}', N'{textBox_sDiaChi.Text}', '{textBox_iSDT.Text}', 
+        VALUES ('{textBox_sMaKH.Text}', N'{textBox_sTenKH.Text}', N'{textBox_sDiaChi.Text}', '{textBox_sSDT.Text}', 
                 '{ngaysinh:yyyy-MM-dd}', N'{gioiTinh}')";
 
                 // Gọi hàm dùng chung để thực thi lệnh
@@ -67,7 +67,7 @@ namespace baitaplonquanlycuahangbanquanao
             }
         }
 
-            private void button_Sua_Click(object sender, EventArgs e)
+        private void button_Sua_Click(object sender, EventArgs e)
         {
             string gioiTinh = radioButton_Nam.Checked ? "Nam" : "Nữ";
             string sqlInsert = $@"
@@ -76,7 +76,7 @@ namespace baitaplonquanlycuahangbanquanao
             sTenKH= N'{textBox_sTenKH.Text}', 
             sDiaChi = N'{textBox_sDiaChi.Text}', 
             dNgaySinh = '{dateTimePicker_dNgaySinh.Value:yyyy-MM-dd}', 
-            sSDT = '{textBox_iSDT.Text}', 
+            sSDT = '{textBox_sSDT.Text}', 
             sGioiTinh = N'{gioiTinh}'
         WHERE sMaKH = '{textBox_sMaKH.Text}'";
             if (hamdungchung.thuchiendoanmasql(constr, sqlInsert))
@@ -129,7 +129,7 @@ namespace baitaplonquanlycuahangbanquanao
             textBox_sMaKH.Clear();
             textBox_sTenKH.Clear();
             textBox_sDiaChi.Clear();
-            textBox_iSDT.Clear();
+            textBox_sSDT.Clear();
 
             // Reset DateTimePicker về trạng thái trống
             dateTimePicker_dNgaySinh.Checked = false;
@@ -169,10 +169,10 @@ namespace baitaplonquanlycuahangbanquanao
                 }
 
                 // Tìm theo số điện thoại 
-                if (!string.IsNullOrEmpty(textBox_iSDT.Text))
+                if (!string.IsNullOrEmpty(textBox_sSDT.Text))
                 {
                     query += " AND sSDT LIKE @sSDT ";
-                    parameters.Add(new SqlParameter("@sSDT", "%" + textBox_iSDT.Text + "%"));
+                    parameters.Add(new SqlParameter("@sSDT", "%" + textBox_sSDT.Text + "%"));
                 }
 
                 // Tìm theo ngày sinh 
@@ -215,7 +215,7 @@ namespace baitaplonquanlycuahangbanquanao
                 textBox_sMaKH.Text = row.Cells["sMaKH"].Value?.ToString();
                 textBox_sTenKH.Text = row.Cells["sTenKH"].Value?.ToString();
                 textBox_sDiaChi.Text = row.Cells["sDiaChi"].Value?.ToString();
-                textBox_iSDT.Text = row.Cells["sSDT"].Value?.ToString();
+                textBox_sSDT.Text = row.Cells["sSDT"].Value?.ToString();
                 dateTimePicker_dNgaySinh.Value = row.Cells["dNgaySinh"].Value != DBNull.Value
                         ? Convert.ToDateTime(row.Cells["dNgaySinh"].Value)
                         : DateTime.Now;
@@ -238,6 +238,19 @@ namespace baitaplonquanlycuahangbanquanao
                 }
             }
 
+        }
+
+        private void button_Indanhsach_Click(object sender, EventArgs e)
+        {
+            f_main mainForm = this.MdiParent as f_main;
+            if (mainForm != null)
+            {
+                mainForm.OpenReportForm3();
+            }
+            else
+            {
+                MessageBox.Show("Lỗi: Không tìm thấy MainForm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

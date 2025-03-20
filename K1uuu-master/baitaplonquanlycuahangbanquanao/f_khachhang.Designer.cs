@@ -38,7 +38,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.dataGridView_DSKH = new System.Windows.Forms.DataGridView();
             this.button_TimKiem = new System.Windows.Forms.Button();
             this.dateTimePicker_dNgaySinh = new System.Windows.Forms.DateTimePicker();
-            this.textBox_iSDT = new System.Windows.Forms.TextBox();
+            this.textBox_sSDT = new System.Windows.Forms.TextBox();
             this.textBox_sDiaChi = new System.Windows.Forms.TextBox();
             this.textBox_sTenKH = new System.Windows.Forms.TextBox();
             this.textBox_sMaKH = new System.Windows.Forms.TextBox();
@@ -62,6 +62,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.button_Indanhsach.TabIndex = 55;
             this.button_Indanhsach.Text = "In Danh Sách";
             this.button_Indanhsach.UseVisualStyleBackColor = true;
+            this.button_Indanhsach.Click += new System.EventHandler(this.button_Indanhsach_Click);
             // 
             // button_Reset
             // 
@@ -142,13 +143,13 @@ namespace baitaplonquanlycuahangbanquanao
             this.dateTimePicker_dNgaySinh.Size = new System.Drawing.Size(271, 27);
             this.dateTimePicker_dNgaySinh.TabIndex = 46;
             // 
-            // textBox_iSDT
+            // textBox_sSDT
             // 
-            this.textBox_iSDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_iSDT.Location = new System.Drawing.Point(447, 102);
-            this.textBox_iSDT.Name = "textBox_iSDT";
-            this.textBox_iSDT.Size = new System.Drawing.Size(154, 27);
-            this.textBox_iSDT.TabIndex = 42;
+            this.textBox_sSDT.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox_sSDT.Location = new System.Drawing.Point(447, 102);
+            this.textBox_sSDT.Name = "textBox_sSDT";
+            this.textBox_sSDT.Size = new System.Drawing.Size(154, 27);
+            this.textBox_sSDT.TabIndex = 42;
             // 
             // textBox_sDiaChi
             // 
@@ -285,7 +286,7 @@ namespace baitaplonquanlycuahangbanquanao
             this.Controls.Add(this.dataGridView_DSKH);
             this.Controls.Add(this.button_TimKiem);
             this.Controls.Add(this.dateTimePicker_dNgaySinh);
-            this.Controls.Add(this.textBox_iSDT);
+            this.Controls.Add(this.textBox_sSDT);
             this.Controls.Add(this.textBox_sDiaChi);
             this.Controls.Add(this.textBox_sTenKH);
             this.Controls.Add(this.textBox_sMaKH);
@@ -315,7 +316,7 @@ namespace baitaplonquanlycuahangbanquanao
         private System.Windows.Forms.DataGridView dataGridView_DSKH;
         private System.Windows.Forms.Button button_TimKiem;
         private System.Windows.Forms.DateTimePicker dateTimePicker_dNgaySinh;
-        private System.Windows.Forms.TextBox textBox_iSDT;
+        private System.Windows.Forms.TextBox textBox_sSDT;
         private System.Windows.Forms.TextBox textBox_sDiaChi;
         private System.Windows.Forms.TextBox textBox_sTenKH;
         private System.Windows.Forms.TextBox textBox_sMaKH;

@@ -51,7 +51,7 @@ namespace baitaplonquanlycuahangbanquanao
         private void đơnHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-            OpenChildForm(new f_donhang());
+            OpenChildForm(new f_donhang(maNV));
         }
 
         private void menuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -118,6 +118,41 @@ namespace baitaplonquanlycuahangbanquanao
             reportForm.WindowState = FormWindowState.Maximized;
             reportForm.Show();
         }
+        public void OpenReportForm2()
+        {
+            // Kiểm tra nếu form đã mở, đóng trước khi mở lại
+            foreach (Form frm in this.MdiChildren)
+            {
+                if (frm is f_CRKhoHang)
+                {
+                    frm.Close();
+                    break;
+                }
+            }
 
+            // Tạo Form mới
+            f_indanhsachnv reportForm = new f_indanhsachnv();
+            reportForm.MdiParent = this; // Đặt MainForm là MDI Parent
+            reportForm.WindowState = FormWindowState.Maximized;
+            reportForm.Show();
+        }
+        public void OpenReportForm3()
+        {
+            // Kiểm tra nếu form đã mở, đóng trước khi mở lại
+            foreach (Form frm in this.MdiChildren)
+            {
+                if (frm is f_CRKhoHang)
+                {
+                    frm.Close();
+                    break;
+                }
+            }
+
+            // Tạo Form mới
+            f_indanhsachkh reportForm = new f_indanhsachkh();
+            reportForm.MdiParent = this; // Đặt MainForm là MDI Parent
+            reportForm.WindowState = FormWindowState.Maximized;
+            reportForm.Show();
+        }
     }
 }

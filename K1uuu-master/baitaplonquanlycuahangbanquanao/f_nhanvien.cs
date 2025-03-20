@@ -18,7 +18,7 @@ namespace baitaplonquanlycuahangbanquanao
         {
             InitializeComponent();
         }
-        public string constr = "Data Source=LAPTOP-5D4306EF\\SQLEXPRES;Initial Catalog=BTL_HSK;Integrated Security=True";
+        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -44,7 +44,7 @@ namespace baitaplonquanlycuahangbanquanao
             using (SqlConnection cnn = new SqlConnection(constr))
             {
                 cnn.Open();
-                using (SqlCommand checkCommand = new SqlCommand(checkSql,cnn))
+                using (SqlCommand checkCommand = new SqlCommand(checkSql, cnn))
                 {
                     int count = (int)checkCommand.ExecuteScalar();
                     if (count > 0)
@@ -58,7 +58,7 @@ namespace baitaplonquanlycuahangbanquanao
                 // Tạo câu lệnh SQL để thêm nhân viên
                 string sqlInsert = $@"
         INSERT INTO btlNhanVien (sMaNV, sTenNV, sCCCD, sDiaChi, sSDT, dNgaySinh, dNgayVaoLam, sTenDangNhap, sMatKhau) 
-        VALUES ('{textBox_sMaNV.Text}', N'{textBox_sTenNV.Text}', '{textBox_sCCCD.Text}', N'{textBox_sDiaChi.Text}', '{textBox_iSDT.Text}', 
+        VALUES ('{textBox_sMaNV.Text}', N'{textBox_sTenNV.Text}', '{textBox_sCCCD.Text}', N'{textBox_sDiaChi.Text}', '{textBox_sSDT.Text}', 
                 '{ngaysinh:yyyy-MM-dd}', '{ngayvaolam:yyyy-MM-dd}', '{textBox_sTenDangNhap.Text}', '{textBox_sMatKhau.Text}')";
 
                 // Gọi hàm dùng chung để thực thi lệnh
@@ -82,7 +82,7 @@ namespace baitaplonquanlycuahangbanquanao
             sTenNV = N'{textBox_sTenNV.Text}', 
             sCCCD = '{textBox_sCCCD.Text}', 
             sDiaChi = N'{textBox_sDiaChi.Text}', 
-            sSDT = '{textBox_iSDT.Text}', 
+            sSDT = '{textBox_sSDT.Text}', 
             dNgaySinh = '{dateTimePicker_dNgaySinh.Value:yyyy-MM-dd}', 
             dNgayVaoLam = '{dateTimePicker_dNgayVaoLam.Value:yyyy-MM-dd}', 
             sTenDangNhap = '{textBox_sTenDangNhap.Text}', 
@@ -139,7 +139,7 @@ namespace baitaplonquanlycuahangbanquanao
             textBox_sTenNV.Clear();
             textBox_sCCCD.Clear();
             textBox_sDiaChi.Clear();
-            textBox_iSDT.Clear();
+            textBox_sSDT.Clear();
             textBox_sTenDangNhap.Clear();
             textBox_sMatKhau.Clear();
             // Reset DateTimePicker về trạng thái trống
@@ -153,7 +153,7 @@ namespace baitaplonquanlycuahangbanquanao
             {
                 cnn.Open();
                 string query = @"
-                          select sMaNV , sTenNV , sCCCD , sDiaChi , sSDT , dNgaySinh , dNgayVaoLam, sTenDangNhap, sMatKhau
+                          select sMaNV , sTenNV , sCCCD , sDiaChi , sSDT , dNgaySinh , dNgayVaoLam
                           from btlNhanVien
                           where 1=1";
                 List<SqlParameter> parameters = new List<SqlParameter>();
@@ -186,10 +186,10 @@ namespace baitaplonquanlycuahangbanquanao
                 }
 
                 // Tìm theo số điện thoại 
-                if (!string.IsNullOrEmpty(textBox_iSDT.Text))
+                if (!string.IsNullOrEmpty(textBox_sSDT.Text))
                 {
-                    query += " AND sSDT LIKE @iSDT ";
-                    parameters.Add(new SqlParameter("@iSDT", "%" + textBox_iSDT.Text + "%"));
+                    query += " AND sSDT LIKE @sSDT ";
+                    parameters.Add(new SqlParameter("@sSDT", "%" + textBox_sSDT.Text + "%"));
                 }
 
                 // Tìm theo ngày sinh 
@@ -205,20 +205,6 @@ namespace baitaplonquanlycuahangbanquanao
                     query += " AND dNgayVaoLam = @dNgayVaoLam ";
                     parameters.Add(new SqlParameter("@dNgayVaoLam", dateTimePicker_dNgayVaoLam.Value.Date));
                 }
-
-                // Tìm theo tên đăng nhập
-                if (!string.IsNullOrEmpty(textBox_sTenDangNhap.Text))
-                {
-                    query += " AND sTenDangNhap LIKE @sTenDangNhap ";
-                    parameters.Add(new SqlParameter("@sTenDangNhap", "%" + textBox_sTenDangNhap.Text + "%"));
-                }
-
-                // Tìm theo mật khẩu
-                if (!string.IsNullOrEmpty(textBox_sMatKhau.Text))
-                {
-                    query += " AND sMatKhau LIKE @sMatKhau ";
-                    parameters.Add(new SqlParameter("@sMatKhau", "%" + textBox_sMatKhau.Text + "%"));
-                }
                 using (SqlCommand cmd = new SqlCommand(query, cnn))
                 {
                     cmd.Parameters.AddRange(parameters.ToArray());
@@ -232,10 +218,18 @@ namespace baitaplonquanlycuahangbanquanao
                 }
             }
         }
-          private void button_Indanhsach_Click(object sender, EventArgs e)
+        private void button_Indanhsach_Click(object sender, EventArgs e)
         {
-
-        } 
+            f_main mainForm = this.MdiParent as f_main;
+            if (mainForm != null)
+            {
+                mainForm.OpenReportForm2();
+            }
+            else
+            {
+                MessageBox.Show("Lỗi: Không tìm thấy MainForm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void dataGridView_DSNV_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -245,7 +239,7 @@ namespace baitaplonquanlycuahangbanquanao
                 textBox_sTenNV.Text = row.Cells["sTenNV"].Value?.ToString();
                 textBox_sCCCD.Text = row.Cells["sCCCD"].Value?.ToString();
                 textBox_sDiaChi.Text = row.Cells["sDiaChi"].Value?.ToString();
-                textBox_iSDT.Text = row.Cells["sSDT"].Value?.ToString();
+                textBox_sSDT.Text = row.Cells["sSDT"].Value?.ToString();
                 textBox_sTenDangNhap.Text = row.Cells["sTenDangNhap"].Value?.ToString();
                 textBox_sMatKhau.Text = row.Cells["sMatKhau"].Value?.ToString();
                 dateTimePicker_dNgaySinh.Value = row.Cells["dNgaySinh"].Value != DBNull.Value
@@ -258,6 +252,6 @@ namespace baitaplonquanlycuahangbanquanao
 
         }
 
-     
+
     }
 }

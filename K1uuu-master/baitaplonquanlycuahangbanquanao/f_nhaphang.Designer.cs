@@ -94,6 +94,7 @@
             this.dgvhangnhap.RowTemplate.Height = 24;
             this.dgvhangnhap.Size = new System.Drawing.Size(1281, 271);
             this.dgvhangnhap.TabIndex = 41;
+            this.dgvhangnhap.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvhangnhap_CellContentClick);
             // 
             // button1
             // 
@@ -105,6 +106,7 @@
             this.button1.TabIndex = 39;
             this.button1.Text = "Xác nhận";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnxoa
             // 
@@ -116,6 +118,7 @@
             this.btnxoa.TabIndex = 40;
             this.btnxoa.Text = "Xóa";
             this.btnxoa.UseVisualStyleBackColor = true;
+            this.btnxoa.Click += new System.EventHandler(this.btnxoa_Click);
             // 
             // label5
             // 
@@ -137,6 +140,7 @@
             this.btnthem.TabIndex = 36;
             this.btnthem.Text = "Thêm";
             this.btnthem.UseVisualStyleBackColor = true;
+            this.btnthem.Click += new System.EventHandler(this.btnthem_Click);
             // 
             // dgvdssp
             // 
@@ -148,6 +152,9 @@
             this.dgvdssp.RowTemplate.Height = 24;
             this.dgvdssp.Size = new System.Drawing.Size(1281, 169);
             this.dgvdssp.TabIndex = 37;
+            this.dgvdssp.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvdssp_CellClick);
+            this.dgvdssp.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvdssp_DataBindingComplete);
+            this.dgvdssp.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvdssp_EditingControlShowing);
             // 
             // groupBox2
             // 
@@ -189,6 +196,7 @@
             this.comboBox_Tenloaihang.Name = "comboBox_Tenloaihang";
             this.comboBox_Tenloaihang.Size = new System.Drawing.Size(171, 28);
             this.comboBox_Tenloaihang.TabIndex = 39;
+            this.comboBox_Tenloaihang.SelectedIndexChanged += new System.EventHandler(this.cbtenloaihang_SelectedIndexChanged);
             // 
             // label_Tenloaihang
             // 
@@ -269,6 +277,7 @@
             this.btnreset.TabIndex = 30;
             this.btnreset.Text = "Reset";
             this.btnreset.UseVisualStyleBackColor = true;
+            this.btnreset.Click += new System.EventHandler(this.btnreset_Click);
             // 
             // txbchatlieu
             // 
@@ -443,6 +452,7 @@
             this.cbnhacungcap.Name = "cbnhacungcap";
             this.cbnhacungcap.Size = new System.Drawing.Size(167, 28);
             this.cbnhacungcap.TabIndex = 4;
+            this.cbnhacungcap.SelectedIndexChanged += new System.EventHandler(this.cbnhacungcap_SelectedIndexChanged);
             // 
             // txbmadonhangnhap
             // 
@@ -483,6 +493,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1343, 873);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dgvhangnhap);
@@ -496,6 +507,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "f_nhaphang";
             this.Text = "Nhập hàng";
+            this.Load += new System.EventHandler(this.f_nhaphang_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvhangnhap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvdssp)).EndInit();
             this.groupBox2.ResumeLayout(false);
