@@ -14,7 +14,7 @@ namespace baitaplonquanlycuahangbanquanao
 {
     public partial class f_hanghoa : Form
     {
-        public string constr = "Data Source=LAPTOP-5D4306EF\\SQLEXPRES;Initial Catalog=BTL_HSK;Integrated Security=True";
+        string constr = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         public f_hanghoa()
         {
             InitializeComponent();

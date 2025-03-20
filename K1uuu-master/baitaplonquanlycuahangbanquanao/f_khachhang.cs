@@ -18,7 +18,7 @@ namespace baitaplonquanlycuahangbanquanao
         {
             InitializeComponent();
         }
-        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string constr = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         private void f_khachhang_Load(object sender, EventArgs e)
         {
             hamdungchung dungchung = new hamdungchung();

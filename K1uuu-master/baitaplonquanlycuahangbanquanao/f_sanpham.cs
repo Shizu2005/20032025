@@ -12,7 +12,7 @@ namespace baitaplonquanlycuahangbanquanao
 {
     public partial class f_sanpham : Form
     {
-        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string constr = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         hamdungchung ham = new hamdungchung();
 
         public f_sanpham()

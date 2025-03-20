@@ -14,7 +14,7 @@ namespace baitaplonquanlycuahangbanquanao
     {
         hamdungchung hamdungchung = new hamdungchung();
 
-        string connectionString = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string connectionString = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         string MANV;
         public f_donhang(string manhanvien)
         {

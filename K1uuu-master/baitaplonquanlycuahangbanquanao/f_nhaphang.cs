@@ -9,7 +9,7 @@ namespace baitaplonquanlycuahangbanquanao
 {
     public partial class f_nhaphang : Form
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string connectionString = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         hamdungchung ham = new hamdungchung();
         //public string currentUserID = "NV002";
         private string maNhanVien;

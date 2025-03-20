@@ -19,7 +19,7 @@ namespace baitaplonquanlycuahangbanquanao
         {
             InitializeComponent();
         }
-        string constr = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string constr = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         private void f_indanhsachnv_Load(object sender, EventArgs e)
         {
             LoadReport();

@@ -15,7 +15,7 @@ namespace baitaplonquanlycuahangbanquanao
 {
     public partial class f_doanhthu : Form
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["baitaplonquanlycuahangbanquanao"].ToString();
+        string connectionString = ConfigurationManager.ConnectionStrings["qlbtl"].ToString();
         hamdungchung dc = new hamdungchung();
         public f_doanhthu()
         {

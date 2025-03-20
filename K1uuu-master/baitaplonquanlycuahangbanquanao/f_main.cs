@@ -75,10 +75,10 @@ namespace baitaplonquanlycuahangbanquanao
 
         }
 
-        private void tồnKhoToolStripMenuItem_Click(object sender, EventArgs e)
+        /*private void tồnKhoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenChildForm(new f_tonkho());    
-        }
+        }*/
 
         private void doanhSốToolStripMenuItem_Click(object sender, EventArgs e)
         {
